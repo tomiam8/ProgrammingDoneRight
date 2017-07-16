@@ -1,4 +1,4 @@
 sphinx
 sphinx-autobuild
 sphinx-rtd-theme
-sphinx-tabs
+sphinx-tabs==0.2.2
