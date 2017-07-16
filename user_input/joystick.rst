@@ -1,0 +1,168 @@
+==========
+User Input
+==========
+
+Toggles
+-------
+If you want to be able to turn on a system with the push of a button, but not have to hold the button the entire time, or push a different button to turn it off, you would want a toggle. The concept of it is simple, press the button, it turns on, press it again, it turns off. The execution of it is slightly more difficult, requiring a few variables to store the current state of the toggle.
+
+.. tabs::
+	.. code-tab:: java
+
+		public class MyRobot extends IterativeRobot{
+			public void robotInit(){
+				Joystick joystick = new Joystick(0);
+			}
+
+			boolean toggleOn = false;
+			boolean togglePressed = false;
+
+			public void teleopPeriodic(){
+				if(joystick.getRawButton(1)){
+					if(!togglePressed){
+						toggleOn = !toggleOn;
+						togglePressed = true;
+					}
+				}else{
+					togglePressed = false;
+				}
+				if(toggleOn){
+					// Do something when toggled on
+				}else{
+					// Do something when toggled off
+				}
+			}
+		}
+	.. code-tab:: c++
+
+		This still needs to be done. If you'd like to do it, fork the github repository at https://github.com/FRC-PDR/ProgrammingDoneRight
+
+	.. code-tab:: py
+
+		'''
+		NOTE: Uses robotpy_ext/control/toggle.py, which isn't
+		merged with the latest version of robotpy yet (v2017.1.5)
+		'''
+		class MyRobot(wpilib.IterativeRobot):
+			def robotInit(self):
+				self.joystick = wpilib.Joystick(0)
+				self.toggle = Toggle(self.joystick, 0)
+
+			def teleopPeriodic(self):
+				if self.toggle:
+					# Do something when button pressed
+				if self.toggle.on:
+					# Do Something when toggled on
+				if self.toggle.off:
+					# Do Something when toggled off
+
+Debouncers
+----------
+When you get a joystick button input, sometimes the mechanical switch will bounce and register one press as 2 hits. To fix this, you should use something called a **Debouncer**. This will make it so the button is only pressed once in a period of time, making it much easier to control your inputs. Debouncers are also very good for making a button press only send once, sending a pulse instead of a constant press.
+
+.. tabs::
+
+	.. code-tab:: java
+
+		public class MyRobot extends IterativeRobot{
+			public void robotInit(){
+				Joystick joystick = new Joystick(0);
+				ButtonDebouncer debouncer = new ButtonDebouncer(joystick, 1, .5);
+			}
+
+
+			public void teleopPeriodic(){
+				if(debouncer.get()){
+					// Do Something
+				}
+			}
+		}
+
+		public class ButtonDebouncer(){
+
+			Joystick joystick;
+			int buttonnum;
+			double latest;
+			double debounce_period;
+
+			public ButtonDebouncer(Joystick joystick, int buttonnum){
+				this.joystick = joystick;
+				this.buttonnum = buttonnum;
+				this.latest = 0;
+				this.debounce_period = .5;
+			}
+			public ButtonDebouncer(Joystick joystick, int buttonnum, float period){
+				this.joystick = joystick;
+				this.buttonnum = buttonnum;
+				this.latest = 0;
+				this.debounce_period = period;
+			}
+
+			public void setDebouncePeriod(float period){
+				this.debounce_period = period;
+			}
+
+			public boolean get(){
+				double now = Timer.getFPGATimestamp();
+				if(joystick.getRawButton(buttonnum)){
+					if((now-latest) > debounce_period){
+						latest = now;
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+
+	.. code-tab:: c++
+
+		class ButtonDebouncer{
+
+			Joystick joystick;
+			int buttonnum;
+			double latest;
+			double debounce_period;
+
+		public:
+			ButtonDebouncer(Joystick joystick, int buttonnum){
+				this.joystick = joystick;
+				this.buttonnum = buttonnum;
+				this.latest = 0;
+				this.debounce_period = .5;
+			}
+			ButtonDebouncer(Joystick joystick, int buttonnum, float period){
+				this.joystick = joystick;
+				this.buttonnum = buttonnum;
+				this.latest = 0;
+				this.debounce_period = period;
+			}
+
+			void setDebouncePeriod(float period){
+				this.debounce_period = period;
+			}
+
+			bool get(){
+				double now = Timer.getFPGATimestamp();
+				if(joystick.getRawButton(buttonnum)){
+					if((now-latest) > debounce_period){
+						latest = now;
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+
+	.. code-tab:: py
+
+		from robotpy_ext.control import ButtonDebouncer
+		class MyRobot(wpilib.IterativeRobot):
+
+			def robotInit(self):
+				self.joystick1 = wpilib.Joystick(1)
+				# Joystick object, Button Number, Period of time before button is pressed again
+				self.button = ButtonDebouncer(joystick, 1, period=.5)
+				
+			def teleopPeriodic(self):
+				if self.button.get():
+					# Do Something

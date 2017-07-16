@@ -27,6 +27,13 @@ Welcome!
 
 .. toctree::
     :maxdepth: 2
+    :caption: User Input
+    :glob:
+
+    user_input/joystick.rst
+
+.. toctree::
+    :maxdepth: 2
     :caption: Control
     :glob:
 
