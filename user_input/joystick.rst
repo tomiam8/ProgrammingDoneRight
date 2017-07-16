@@ -7,7 +7,8 @@ Toggles
 If you want to be able to turn on a system with the push of a button, but not have to hold the button the entire time, or push a different button to turn it off, you would want a toggle. The concept of it is simple, press the button, it turns on, press it again, it turns off. The execution of it is slightly more difficult, requiring a few variables to store the current state of the toggle.
 
 .. tabs::
-	.. code-tab:: java
+
+    .. code-tab:: java
 
 		public class MyRobot extends IterativeRobot{
 			public void robotInit(){
@@ -33,11 +34,12 @@ If you want to be able to turn on a system with the push of a button, but not ha
 				}
 			}
 		}
-	.. code-tab:: c++
+
+    .. code-tab:: c++
 
 		This still needs to be done. If you'd like to do it, fork the github repository at https://github.com/FRC-PDR/ProgrammingDoneRight
 
-	.. code-tab:: py
+    .. code-tab:: py
 
 		'''
 		NOTE: Uses robotpy_ext/control/toggle.py, which isn't
@@ -162,7 +164,7 @@ When you get a joystick button input, sometimes the mechanical switch will bounc
 				self.joystick1 = wpilib.Joystick(1)
 				# Joystick object, Button Number, Period of time before button is pressed again
 				self.button = ButtonDebouncer(joystick, 1, period=.5)
-				
+
 			def teleopPeriodic(self):
 				if self.button.get():
 					# Do Something
