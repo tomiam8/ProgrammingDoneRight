@@ -1,10 +1,10 @@
-==========
+==================
 Joystick Utilities
-==========
+==================
 
 Toggles
 -------
-If you want to be able to turn on a system with the push of a button, but not have to hold the button the entire time, or push a different button to turn it off, you would want a toggle. The concept of it is simple, press the button, it turns on, press it again, it turns off. The execution of it is slightly more difficult, requiring a few variables to store the current state of the toggle.
+If you want to be able to turn on a system with the push of a button, but not have to hold the button the entire time (but have the option to), or push a different button to turn it off, you would want a toggle. The concept of it is simple, press the button, it turns on, press it again, it turns off. The execution of it is slightly more difficult, requiring a few variables to store the current state of the toggle.
 
 .. tabs::
 
@@ -60,7 +60,7 @@ If you want to be able to turn on a system with the push of a button, but not ha
 
 Debouncers
 ----------
-When you get a joystick button input, sometimes the mechanical switch will bounce and register one press as 2 hits. To fix this, you should use something called a **Debouncer**. This will make it so the button is only pressed once in a period of time, making it much easier to control your inputs. Debouncers are also very good for making a button press only send once, sending a pulse instead of a constant press.
+When you get a joystick button input, sometimes the mechanical switch will bounce and register one press as 2 hits. To fix this, you should use something called a **Debouncer**. This will make it so the button is only registered as pressed once, making it much easier to control your inputs. Debouncers are also useful when you want a surefire way of only sending one pulse (instead having to press and release really quickly).
 
 .. tabs::
 
@@ -75,7 +75,7 @@ When you get a joystick button input, sometimes the mechanical switch will bounc
 
 			public void teleopPeriodic(){
 				if(debouncer.get()){
-					// Do Something
+					System.out.print() // This print statement will only get called every .5 seconds
 				}
 			}
 		}
@@ -118,6 +118,17 @@ When you get a joystick button input, sometimes the mechanical switch will bounc
 
 	.. code-tab:: c++
 
+		class MyRobot(wpilib.IterativeRobot){
+
+		public:
+			ButtonDebounce debouncer (joystick, 1, .5)
+			public void teleopPeriodic()
+			{
+				if debouncer.get(){
+					cout << endl; // This print line will only get called every .5 seconds
+				}
+			}
+		}
 		class ButtonDebouncer{
 
 			Joystick joystick;
@@ -163,8 +174,8 @@ When you get a joystick button input, sometimes the mechanical switch will bounc
 			def robotInit(self):
 				self.joystick1 = wpilib.Joystick(1)
 				# Joystick object, Button Number, Period of time before button is pressed again
-				self.button = ButtonDebouncer(joystick, 1, period=.5)
+				self.button = ButtonDebouncer(self.joystick, 1, period=.5)
 
 			def teleopPeriodic(self):
 				if self.button.get():
-					# Do Something
+					print() # This print statement will only get called every .5 seconds
