@@ -182,11 +182,13 @@ In typical FRC fashion, you want your robot to line up with the center of the ta
    .. code-tab:: c++
 
          Rect boundRect = boundingRect(contours[i]);
+	 double centerX = boundRect.x + (boundRect.width / 2)
 	 double centerY = boundRect.y + (boundRect.height / 2)
 
    .. code-tab:: py
 
          x,y,w,h = cv2.boundingRect(contour)
+	 double centerX = boundRect.x + (boundRect.w / 2)
 	 double centerY = boundRect.y + (boundRect.h / 2)
          
 
@@ -197,7 +199,7 @@ While you could simply apply a bounded rectangle and then find the center of tha
 
    .. code-tab:: java
 
-        Moments m = Imgproc.moments(contours[i]);
+        Moments m = Imgproc.moments(contour);
 	double centerX = m.get_m10() / m.get_m00();
 	double centerY = m.get_m01() / m.get_m00();
 
@@ -208,7 +210,7 @@ While you could simply apply a bounded rectangle and then find the center of tha
 
    .. code-tab:: py
 
-          moments = cv2.moments(contours[i])
+          moments = cv2.moments(contour)
 	  centerX = int(moments['m10']/moments['m00'])
           centerY = int(moments['m01']/moments['m00'])
          
