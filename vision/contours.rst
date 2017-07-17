@@ -105,7 +105,7 @@ A quick and easy way to filter out small contours is to check their area. Establ
    .. code-tab:: c++
 
        float contourArea = contourArea(contours[i]);
-       if contourArea > maxArea || contourArea < minArea)
+       if (contourArea > maxArea || contourArea < minArea)
        {
            continue;
        }
@@ -168,26 +168,50 @@ The last test we will cover is solidity. That is, the ratio between the contour 
 Finding the center
 ------------------
 
-In typical FRC fashion, you want your robot to line up with the center of the target (contour). In order to do this, one must first find the center. While you could simply apply a bounded rectangle and then find the center of that, there is a more precise way: N-th order moments.
-
-Mathematically, a moment is defined as :math:`\mu _{n}=\int _{-\infty }^{\infty }(x-c)^{n}\,f(x)\,dx`. For a 2D continuous function f(x,y) the moment of order (p + q) is defined as :math:`M_{{pq}}=\int \limits _{{-\infty }}^{{\infty }}\int \limits _{{-\infty }}^{{\infty }}x^{p}y^{q}f(x,y)\,dx\,dy`. The area of a contour is the zeroth moment, and moments can be used to find the centroid of a contour.
+In typical FRC fashion, you want your robot to line up with the center of the target (contour). In order to do this, one must first find the center. Here is how to find the center using bounding rectangles. CenterX is the center x coordinate and CenterY is center y coordinate.
 
 .. tabs::
 
    .. code-tab:: java
 
          Rect boundRect = Imgproc.boundingRect(contour);
-         float ratio = Imgproc.contourArea(contour)/(boundRect.width*boundRect.height)
+         double centerX = boundRect.x + (boundRect.width / 2)
+	 double centerY = boundRect.y + (boundRect.height / 2)
+
 
    .. code-tab:: c++
 
          Rect boundRect = boundingRect(contours[i]);
-	 float ratio = contourArea(contours[i])/(boundRect.width*boundRect.height);
+	 double centerY = boundRect.y + (boundRect.height / 2)
 
    .. code-tab:: py
 
          x,y,w,h = cv2.boundingRect(contour)
-         ratio = cv2.contourArea(contour)/(w*h)
+	 double centerY = boundRect.y + (boundRect.h / 2)
+         
+
+
+While you could simply apply a bounded rectangle and then find the center of that, there is a more precise way: N-th order moments. Mathematically, a moment is defined as :math:`\mu _{n}=\int _{-\infty }^{\infty }(x-c)^{n}\,f(x)\,dx`. For a 2D continuous function f(x,y) the moment of order (p + q) is defined as :math:`M_{{pq}}=\int \limits _{{-\infty }}^{{\infty }}\int \limits _{{-\infty }}^{{\infty }}x^{p}y^{q}f(x,y)\,dx\,dy`. The area of a contour is the zeroth moment, and moments can be used to find the centroid of a contour. The centroid is the center of mass of an object. The centroid point is also the center of gravity. Using moments, the centroid, C is defined as :math:`C_x = M_{10} / M_{00}` and :math:`C_y =M_{01} /M_{00}`.
+
+.. tabs::
+
+   .. code-tab:: java
+
+        Moments m = Imgproc.moments(contours[i]);
+	double centerX = m.get_m10() / m.get_m00();
+	double centerY = m.get_m01() / m.get_m00();
+
+   .. code-tab:: c++
+   
+	 cv::Moments moment = cv::moments(contours[i]);
+	 cv::Point center = cv::Point2f(moment.m10/moment.m00, moment.m01/moment.m00);
+
+   .. code-tab:: py
+
+          moments = cv2.moments(contours[i])
+	  centerX = int(moments['m10']/moments['m00'])
+          centerY = int(moments['m01']/moments['m00'])
+         
 
 Note that in previous years for FRC, there hasn't been a vision challenge where the vision assistance tape wasn't symmetrical. But in future if the tape isn't symmetrical, you would need to consider whether the centroid is what you desire.
 
