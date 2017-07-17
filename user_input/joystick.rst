@@ -1,11 +1,19 @@
 Controllers
 ===========
 
+
+
+Determining Joystick Mappings
+-----------------------------
+One way to determine joystick mapping is by writing robot code to display axis and button values via the dashboard or console, loading it on the robot, then testing the joystick. A simpler way is to use the Driver Station. The 2015 FRC Driver Station contains indicators of the values of axes buttons and the POV that can be used to determine the mapping between physical joystick features and axis or button numbers. Simply click the joystick in the list to select it and the indicators will begin responding to the joystick input.
+
+.. image:: media/mapping.png
+	:align: center
+
 XBox Controller
 ---------------
 
-When using an Xbox controller, it can be a pain to determine the mappings yourself. Thankfully, WPILib has already done that, and put them into a class called XBoxController. It contains better-named methods specifically for the xbox controller. These included :code:`getAButton()`, and :code:`getBumper()`
-
+When using an Xbox controller, it can be a pain to determine the mappings yourself. Thankfully, WPILib has already done that, and put them into a class called `XboxController <http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/XboxController.html>`_
 
 Joystick Utilities
 ==================
