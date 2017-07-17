@@ -1,11 +1,12 @@
 Controllers
 ===========
 
-.. py:class:: XboxController(port)
+XBox Controller
+---------------
 
-	When using an Xbox controller, there is a more specific version of a joystick provided. Using the :code:`wpilib.XboxController` class as your joystick class (instead of :code:`wpilib.Joystick`), there are some specific functions that are given. 
+When using an Xbox controller, it can be a pain to determine the mappings yourself. Thankfully, WPILib has already done that, and put them into a class called XBoxController. It contains better-named methods specifically for the xbox controller. These included :code:`getAButton()`, and :code:`getBumper()`
 
-==================
+
 Joystick Utilities
 ==================
 
