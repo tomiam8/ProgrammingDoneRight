@@ -8,7 +8,7 @@ Determining Joystick Mappings
 One way to determine joystick mapping is by writing robot code to display axis and button values via the dashboard or console, loading it on the robot, then testing the joystick. A simpler way is to use the Driver Station. The 2015 FRC Driver Station contains indicators of the values of axes buttons and the POV that can be used to determine the mapping between physical joystick features and axis or button numbers. Simply click the joystick in the list to select it and the indicators will begin responding to the joystick input.
 
 .. image:: media/mapping.png
-	:align: center
+    :align: center
 
 XBox Controller
 ---------------
@@ -26,53 +26,62 @@ If you want to be able to turn on a system with the push of a button, but not ha
 
     .. code-tab:: java
 
-		public class MyRobot extends IterativeRobot{
-			public void robotInit(){
-				Joystick joystick = new Joystick(0);
-			}
+        public class MyRobot extends IterativeRobot{
+            public void robotInit(){
+                Joystick joystick = new Joystick(0);
+            }
 
-			boolean toggleOn = false;
-			boolean togglePressed = false;
+            boolean toggleOn = false;
+            boolean togglePressed = false;
 
-			public void teleopPeriodic(){
-				if(joystick.getRawButton(1)){
-					if(!togglePressed){
-						toggleOn = !toggleOn;
-						togglePressed = true;
-					}
-				}else{
-					togglePressed = false;
-				}
-				if(toggleOn){
-					// Do something when toggled on
-				}else{
-					// Do something when toggled off
-				}
-			}
-		}
+            public void teleopPeriodic(){
+                updateToggle();
+
+                if(toggleOn){
+                    // Do something when toggled on
+                }else{
+                    // Do something when toggled off
+                }
+            }
+
+            public void updateToggle()
+            {
+                if(joystick.getRawButton(1)){
+                    if(!togglePressed){
+                        toggleOn = !toggleOn;
+                        togglePressed = true;
+                    }
+                }else{
+                    togglePressed = false;
+                }
+            }
+        }
 
     .. code-tab:: c++
 
-		This still needs to be done. If you'd like to do it, fork the github repository at https://github.com/FRC-PDR/ProgrammingDoneRight
+        //This still needs to be done. If you'd like to do it, fork the github repository at https://github.com/FRC-PDR/ProgrammingDoneRight
 
     .. code-tab:: py
 
-		'''
-		NOTE: Uses robotpy_ext/control/toggle.py, which isn't
-		merged with the latest version of robotpy yet (v2017.1.5)
-		'''
-		class MyRobot(wpilib.IterativeRobot):
-			def robotInit(self):
-				self.joystick = wpilib.Joystick(0)
-				self.toggle = Toggle(self.joystick, 0)
+        '''
+        NOTE: Uses robotpy_ext/control/toggle.py, which isn't
+        merged with the latest version of robotpy yet (v2017.1.5)
+        '''
+        class MyRobot(wpilib.IterativeRobot):
+            def robotInit(self):
+                self.joystick = wpilib.Joystick(0)
+                self.toggle = Toggle(self.joystick, 0)
 
-			def teleopPeriodic(self):
-				if self.toggle:
-					# Do something when button pressed
-				if self.toggle.on:
-					# Do Something when toggled on
-				if self.toggle.off:
-					# Do Something when toggled off
+            def teleopPeriodic(self):
+                if self.toggle:
+                    # Do something when button pressed
+                if self.toggle.on:
+                    # Do Something when toggled on
+                if self.toggle.off:
+                    # Do Something when toggled off
+
+    It is probably helpful to extend the toggle logic to a class, that way you can create many different toggle buttons without having repeating code.
+    For an example of this, look at the `robotpy version <https://github.com/Twinters007/robotpy-wpilib-utilities/blob/toggle/robotpy_ext/control/toggle.py>`_.
 
 Debouncers
 ----------
@@ -80,118 +89,118 @@ When you get a joystick button input, sometimes the mechanical switch will bounc
 
 .. tabs::
 
-	.. code-tab:: java
+    .. code-tab:: java
 
-		public class MyRobot extends IterativeRobot{
-			public void robotInit(){
-				Joystick joystick = new Joystick(0);
-				ButtonDebouncer debouncer = new ButtonDebouncer(joystick, 1, .5);
-			}
+        public class MyRobot extends IterativeRobot{
+            public void robotInit(){
+                Joystick joystick = new Joystick(0);
+                ButtonDebouncer debouncer = new ButtonDebouncer(joystick, 1, .5);
+            }
 
 
-			public void teleopPeriodic(){
-				if(debouncer.get()){
-					System.out.print() // This print statement will only get called every .5 seconds
-				}
-			}
-		}
+            public void teleopPeriodic(){
+                if(debouncer.get()){
+                    System.out.print() // This print statement will only get called every .5 seconds
+                }
+            }
+        }
 
-		public class ButtonDebouncer(){
+        public class ButtonDebouncer(){
 
-			Joystick joystick;
-			int buttonnum;
-			double latest;
-			double debounce_period;
+            Joystick joystick;
+            int buttonnum;
+            double latest;
+            double debounce_period;
 
-			public ButtonDebouncer(Joystick joystick, int buttonnum){
-				this.joystick = joystick;
-				this.buttonnum = buttonnum;
-				this.latest = 0;
-				this.debounce_period = .5;
-			}
-			public ButtonDebouncer(Joystick joystick, int buttonnum, float period){
-				this.joystick = joystick;
-				this.buttonnum = buttonnum;
-				this.latest = 0;
-				this.debounce_period = period;
-			}
+            public ButtonDebouncer(Joystick joystick, int buttonnum){
+                this.joystick = joystick;
+                this.buttonnum = buttonnum;
+                this.latest = 0;
+                this.debounce_period = .5;
+            }
+            public ButtonDebouncer(Joystick joystick, int buttonnum, float period){
+                this.joystick = joystick;
+                this.buttonnum = buttonnum;
+                this.latest = 0;
+                this.debounce_period = period;
+            }
 
-			public void setDebouncePeriod(float period){
-				this.debounce_period = period;
-			}
+            public void setDebouncePeriod(float period){
+                this.debounce_period = period;
+            }
 
-			public boolean get(){
-				double now = Timer.getFPGATimestamp();
-				if(joystick.getRawButton(buttonnum)){
-					if((now-latest) > debounce_period){
-						latest = now;
-						return true;
-					}
-				}
-				return false;
-			}
-		}
+            public boolean get(){
+                double now = Timer.getFPGATimestamp();
+                if(joystick.getRawButton(buttonnum)){
+                    if((now-latest) > debounce_period){
+                        latest = now;
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
 
-	.. code-tab:: c++
+    .. code-tab:: c++
 
-		class MyRobot(wpilib.IterativeRobot){
+        class MyRobot(wpilib.IterativeRobot){
 
-		public:
-			ButtonDebounce debouncer (joystick, 1, .5)
-			public void teleopPeriodic()
-			{
-				if debouncer.get(){
-					cout << endl; // This print line will only get called every .5 seconds
-				}
-			}
-		}
-		class ButtonDebouncer{
+        public:
+            ButtonDebounce debouncer (joystick, 1, .5)
+            public void teleopPeriodic()
+            {
+                if debouncer.get(){
+                    cout << endl; // This print line will only get called every .5 seconds
+                }
+            }
+        }
+        class ButtonDebouncer{
 
-			Joystick joystick;
-			int buttonnum;
-			double latest;
-			double debounce_period;
+            Joystick joystick;
+            int buttonnum;
+            double latest;
+            double debounce_period;
 
-		public:
-			ButtonDebouncer(Joystick joystick, int buttonnum){
-				this.joystick = joystick;
-				this.buttonnum = buttonnum;
-				this.latest = 0;
-				this.debounce_period = .5;
-			}
-			ButtonDebouncer(Joystick joystick, int buttonnum, float period){
-				this.joystick = joystick;
-				this.buttonnum = buttonnum;
-				this.latest = 0;
-				this.debounce_period = period;
-			}
+        public:
+            ButtonDebouncer(Joystick joystick, int buttonnum){
+                this.joystick = joystick;
+                this.buttonnum = buttonnum;
+                this.latest = 0;
+                this.debounce_period = .5;
+            }
+            ButtonDebouncer(Joystick joystick, int buttonnum, float period){
+                this.joystick = joystick;
+                this.buttonnum = buttonnum;
+                this.latest = 0;
+                this.debounce_period = period;
+            }
 
-			void setDebouncePeriod(float period){
-				this.debounce_period = period;
-			}
+            void setDebouncePeriod(float period){
+                this.debounce_period = period;
+            }
 
-			bool get(){
-				double now = Timer.getFPGATimestamp();
-				if(joystick.getRawButton(buttonnum)){
-					if((now-latest) > debounce_period){
-						latest = now;
-						return true;
-					}
-				}
-				return false;
-			}
-		}
+            bool get(){
+                double now = Timer.getFPGATimestamp();
+                if(joystick.getRawButton(buttonnum)){
+                    if((now-latest) > debounce_period){
+                        latest = now;
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
 
-	.. code-tab:: py
+    .. code-tab:: py
 
-		from robotpy_ext.control import ButtonDebouncer
-		class MyRobot(wpilib.IterativeRobot):
+        from robotpy_ext.control import ButtonDebouncer
+        class MyRobot(wpilib.IterativeRobot):
 
-			def robotInit(self):
-				self.joystick1 = wpilib.Joystick(1)
-				# Joystick object, Button Number, Period of time before button is pressed again
-				self.button = ButtonDebouncer(self.joystick, 1, period=.5)
+            def robotInit(self):
+                self.joystick1 = wpilib.Joystick(1)
+                # Joystick object, Button Number, Period of time before button is pressed again
+                self.button = ButtonDebouncer(self.joystick, 1, period=.5)
 
-			def teleopPeriodic(self):
-				if self.button.get():
-					print() # This print statement will only get called every .5 seconds
+            def teleopPeriodic(self):
+                if self.button.get():
+                    print() # This print statement will only get called every .5 seconds

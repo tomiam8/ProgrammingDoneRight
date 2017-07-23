@@ -17,13 +17,19 @@ Welcome!
 .. toctree::
     :maxdepth: 2
     :titlesonly:
-    :caption: Introduction
+    :caption: Introduction to Programming
 
     Introduction to Java <https://www.tutorialspoint.com/java/index.htm>
     Introduction to C++ <https://www.tutorialspoint.com/cplusplus/index.htm>
     Introduction to Python <https://www.tutorialspoint.com/python3/index.htm>
 
-|
+
+.. toctree::
+    :maxdepth: 2
+    :caption: Good Practices
+
+    GoodPractice/code_structure.rst
+
 
 .. toctree::
     :maxdepth: 2
@@ -31,8 +37,6 @@ Welcome!
     :glob:
 
     user_input/joystick.rst
-
-|
 
 .. toctree::
     :maxdepth: 2
@@ -42,7 +46,6 @@ Welcome!
     control/*
     motors/*
 
-|
 
 .. toctree::
     :maxdepth: 2
