@@ -10,7 +10,7 @@ One way to determine joystick mapping is by writing robot code to display axis a
 .. image:: media/mapping.png
     :align: center
 
-XBox Controller
+Xbox Controller
 ---------------
 
 When using an Xbox controller, it can be a pain to determine the mappings yourself. Thankfully, WPILib has already done that, and put them into a class called `XboxController <http://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/XboxController.html>`_
