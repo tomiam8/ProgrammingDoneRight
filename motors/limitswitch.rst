@@ -47,6 +47,9 @@ The status of the limit switch can be determined using the ``get`` method of ``D
     .. code-tab:: java
 
         public class MyRobot extends IterativeRobot{
+            DigitalInput forwardLimitSwitch, reverseLimitSwitch;
+            Talon motor;
+            Joystick joystick1;
             public void robotInit(){
                 DigitalInput forwardLimitSwitch = new DigitalInput(1);
                 DigitalInput reverseLimitSwitch = new DigitalInput(2);
@@ -94,6 +97,7 @@ The status of the limit switch can be determined using the ``get`` method of ``D
                     output = fmax(output, 0);
                 motor->set(output);
             }
+        }
     .. code-tab:: py
 
         class MyRobot(wpilib.IterativeRobot):

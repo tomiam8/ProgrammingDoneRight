@@ -1,6 +1,7 @@
 Thresholding
 ============
 
+
 Thresholding is the process of converting an image to a binary image. If a pixel passes the threshold, it turns white (255 for 8 bit images), else, it turns black (0).
 
 .. figure:: ../vision/media/image.png
@@ -36,17 +37,17 @@ In layman's terms, if :math:`low < pixel value` , then the pixel passes the test
 
 .. tabs::
 
-   .. code-tab:: java
+    .. code-tab:: java
 
-       Imgproc.threshold(src, dst, value, maxValue, Imgproc.THRESH_OTSU);
+        Imgproc.threshold(src, dst, value, maxValue, Imgproc.THRESH_OTSU);
 
-   .. code-tab:: c++
+    .. code-tab:: c++
 
-       cv::threshold(src, dst, value, maxValue, THRESH_BINARY);
+        cv::threshold(src, dst, value, maxValue, THRESH_BINARY);
 
-   .. code-tab:: py
+    .. code-tab:: py
 
-       ret,dst = cv2.threshold(src, value, maxValue, cv2.THRESH_BINARY)
+        ret, dst = cv2.threshold(src, value, maxValue, cv2.THRESH_BINARY)
 
 While other methods besides THRESH_BINARY exist in OpenCV, there is not a good application to use any of them in FRC.
 
@@ -69,17 +70,17 @@ Note that this is identical to threshold's output because the parameters used ma
 
 .. tabs::
 
-   .. code-tab:: java
+    .. code-tab:: java
 
-       Core.inRange(src, low, high, dst);
+        Core.inRange(src, low, high, dst);
 
-   .. code-tab:: c++
+    .. code-tab:: c++
 
-       cv::inRange(src, low, high, dst);
+        cv::inRange(src, low, high, dst);
 
-   .. code-tab:: py
+    .. code-tab:: py
 
-      ret, dst = cv2.inRange(src, low, high)
+        ret, dst = cv2.inRange(src, low, high)
 
 Otsu
 ----
@@ -102,17 +103,17 @@ Weights :math:`\omega _{0}` and :math:`\omega _{1}` are the probabilities of the
 
 .. tabs::
 
-   .. code-tab:: java
+    .. code-tab:: java
 
-       Imgproc.threshold(src, dst, 0, 255, Imgproc.THRESH_OTSU);
+        Imgproc.threshold(src, dst, 0, 255, Imgproc.THRESH_OTSU);
 
-   .. code-tab:: c++
+    .. code-tab:: c++
 
-       cv::threshold(src, dst, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+        cv::threshold(src, dst, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
 
-   .. code-tab:: py
+    .. code-tab:: py
 
-       ret2, dst = cv2.threshold(src ,0 , 255, cv2.THRESH_OTSU)
+        ret2, dst = cv2.threshold(src ,0 , 255, cv2.THRESH_OTSU)
 
 Otsu thresholding optimizes the upper and lower bounds, so 0 and 255 are simply placeholders as OpenCV doesn't use a separate function for Otsu thresholding.
 
@@ -134,17 +135,17 @@ The syntax for each language changes slightly, as observed:
 
 .. tabs::
 
-   .. code-tab:: java
+    .. code-tab:: java
 
-       Core.inRange(src, new Scalar(low1, low2, low3), new Scalar(high1, high2, high3), dst);
+        Core.inRange(src, new Scalar(low1, low2, low3), new Scalar(high1, high2, high3), dst);
 
-   .. code-tab:: c++
+    .. code-tab:: c++
 
-       cv::inRange(src, Scalar(low1, low2, low3), Scalar(high1, high2, high3), dst);
+        cv::inRange(src, Scalar(low1, low2, low3), Scalar(high1, high2, high3), dst);
 
-   .. code-tab:: py
+    .. code-tab:: py
 
-       dst = cv2.inRange(src, np.array([low1, low2, low3]), np.array([high1, high2, high3]))
+        dst = cv2.inRange(src, np.array([low1, low2, low3]), np.array([high1, high2, high3]))
 
 Using HSV Thresholding
 --------------------------------
@@ -152,17 +153,17 @@ HSV thresholding uses hue, saturation, and value to threshold images. Unlike RGB
 
 .. tabs::
 
-  .. code-tab:: java
+    .. code-tab:: java
 
-      Imgproc.cvtColor(src, dst, Imgproc.COLOR_BGR2HSV);
+        Imgproc.cvtColor(src, dst, Imgproc.COLOR_BGR2HSV);
 
-  .. code-tab:: c++
+    .. code-tab:: c++
 
-      cv::cvtColor(src, dst, CV_BGR2HSV);
+        cv::cvtColor(src, dst, CV_BGR2HSV);
 
-  .. code-tab:: py
+    .. code-tab:: py
 
-     dst = cv2.cvtColor(src, cv2.COLOR_BGR2HSV)
+        dst = cv2.cvtColor(src, cv2.COLOR_BGR2HSV)
 
 Using Trackbars/Sliders for Real Time Tuning
 --------------------------------------------
@@ -179,8 +180,8 @@ As said above, sliders allow you to dynamically change HSV values, allowing you 
    .. code-tab:: py
 
        cv2.namedWindow('Title of Window')
-       cv2.createTrackbar('Title of Slider’, ‘Title of Window”, 0, 255, nothing)
-       var = cv2.getTrackbarPos(‘title of slider’, ‘title of window’);
+       cv2.createTrackbar('Title of Slider', 'Title of Window', 0, 255, nothing)
+       var = cv2.getTrackbarPos('Title of Slide', 'Title of Window')
 
 
 Let's tackle an example. This is a pretty standard image that one might have if using green LEDs for the 2017 game.
