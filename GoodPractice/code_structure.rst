@@ -3,7 +3,7 @@ Code Structure
 
 Structure of Your Robot Program
 -------------------------------
-It would be wrong of me to say there is one right way of setting up your code. There is not. You can set up your code any way you would like, and as long as you can understand the structure and effectively navigate your code. I am going to explain one structure of code that is useful for teams using SampleRobot, non-command IterativeRobot, PeriodicRobot, and MagicRobot. It is the same structure used by 5 time Innovation in Control Award recipient Team 1418 Vae Victis. ::
+It would be wrong of me to say there is one right way of setting up your code. There is not. You can set up your code any way you would like, as long as you can understand the structure and effectively navigate your code. I am going to explain one structure of code that is useful for teams using SampleRobot, non-command IterativeRobot, PeriodicRobot, and MagicRobot. It is the same structure used by 5 time Innovation in Control Award recipient Team 1418 Vae Victis. ::
 
     Robot/
         robot/
@@ -57,7 +57,7 @@ robotInit
 
     .. code-tab:: java
 
-        public class MyRobot(wpilib.Iterative) {
+        public class MyRobot(wpilib.IterativeRobot) {
 
             Joystick joystick1, joystick2;
             Drive drive;
@@ -89,7 +89,7 @@ robotInit
 
         class MyRobot(wpilib.IterativeRobot):
 
-            def robotInit():
+            def robotInit(self):
                 self.joystick1 = Joystick(0)
                 self.joystick2 = Joystick(1)
                 self.motor1 = Talon(1)
@@ -105,7 +105,7 @@ Inside ``robotInit`` is where we actually initializing the variables. There is n
 Teleop
 ~~~~~~
 
-Now that you've created all of the robot components, we can focus on telop code. The main basis of teleop code is using ``if`` statements to check for input, and the performing some action based on these events. For example ::
+Now that you've created all of the robot components, we can focus on teleop code. The main basis of teleop code is using ``if`` statements to check for input, and the performing some action based on these events. For example ::
 
     drive.drive(joystick.getY(), joystick.getX())
 
