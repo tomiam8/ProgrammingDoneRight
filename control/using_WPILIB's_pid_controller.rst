@@ -44,8 +44,11 @@ Linear output assumption
 Implementing a basic PID Control
 ------------------------------------
 PIDController constuctors:
+
 .. tabs::
+
 	.. code-tab:: java
+	
 		public PIDController(double Kp, double Ki, double Kd, PIDSource source, PIDOutput output)
 		public PIDController(double Kp, double Ki, double Kd, PIDSource source, PIDOutput output, double period)
 		public PIDController(double Kp, double Ki, double Kd, double Kf, PIDSource source, PIDOutput output)
@@ -96,6 +99,7 @@ setToleranceBuffer    Sets the number of previous error samples to average for t
 Velocity PID Control
 ---------------------
 To use PID Controller to maintain a velocity - say for a shooter fly wheel or closed loop driving:
+
 + You should use a feedforward term (Kf)
 + Your PIDSource should probably have a PIDSourceType of kRate
 + Be carefull of what your PIDSource is giving - for example, if you use an encoder, and it gives encoder positions, but you want speed, then you might need to wrap it with your own code that gives the rate of change instead.
@@ -104,27 +108,39 @@ To use PID Controller to maintain a velocity - say for a shooter fly wheel or cl
 Using PID Subsystem
 ------------------------
 WPILIB provides the PID Subsytem class to provide convenience methods to run a PIDController on a subsytem for simple cases. For example, if you had an elevator subsytem that needed to stay at the same height, you could use a PIDSubsystem for that.
+
 To use, rather than extending Subsystem, extend PIDSubsytem.
+
 You will need to define the functions returnPIDInput and usePIDOutput to give to the PIDController, and you will want to in the constructor for your subsytem call super(p, i, d, f, period)
+
 You can access the internal PIDController with getPIDController()
 
 
 Explanation of the various PID WPILIB class's
 --------------------------------------------------
 These are all found at edu.wpi.first.wpilibj, except for PIDSubsystem which is at edu.wpi.first.wpilibj.command
-================  =
-PID WPILIB Class  Function/role
-================  =
-PIDController     The main PID Class that runs your PID loop, and has been referenced many times in this article.
-PIDSubsystem      See "Using PID Subsytem". Provides convenience methods to run a PIDController on  subsystem for simple cases.
-PIDInterface      A generic PID interface with generic methods. Extends controller. If you wanted you could implement this if you made your own PID Controller.
-PIDOutput         An interface for the function PIDWrite, to be implemented by an output device such as a motor.
-PIDSource         An interface to be implemented by input sensors.
-PIDSourceType     An enum for the two types of PIDSources - Displacement and Rate.
+
+
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+|  PID WPILIB Class | Function/role                                                                                                                                 |
++===================+===============================================================================================================================================+
+| PIDController     | The main PID Class that runs your PID loop and has been referenced many times in this article.                                                |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+| PIDSubsystem      | See                                                                                                                                           |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+| PIDInterface      | A generic PID interface with generic methods. Extends controller. If you wanted you could implement this if you made your own PID Controller. |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+| PIDOutput         | An interface for the function PIDWrite to be implemented by an output device such as a motor.                                                 |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+| PIDSource         | An interface to be implemented by input sensors.                                                                                              |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+| PIDSourceType     | An enum for the two types of PIDSources - Displacement and Rate.                                                                              |
++-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
 
 Adding Ramping for motors
 ---------------------------
 As mentioned earlier, the best way is generally to increase your D term as it will smooth out sudden changes.
 However, alternative options, if for some reason you could not change your D term:
+
 + Create a wrapper function for PIDWrite that dampens motors. This function would store the previous output to the motor, and if given a new output that was say greater than 0.2 higher, it would only increase it by 0.2, and then increase it more after a brief wait. Note that this will reduce the effictiveness of your control, and will most likely mess up the I term of the PID loop
 + Dynamically change the minimum / maximum values of your PID Controller. Say, whever PIDWrite get's called, change the PIDController's maximum and minimum values to be around a certain band. This is basically the first option, but a bit better as it will limit the I term and stop it from going crazy.
