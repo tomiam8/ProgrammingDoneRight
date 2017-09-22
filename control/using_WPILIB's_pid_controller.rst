@@ -53,6 +53,9 @@ PIDController constuctors:
 		public PIDController(double Kp, double Ki, double Kd, PIDSource source, PIDOutput output, double period)
 		public PIDController(double Kp, double Ki, double Kd, double Kf, PIDSource source, PIDOutput output)
 		public PIDController(double Kp, double Ki, double Kd, double Kf, PIDSource source, PIDOutput output, double period)
+	.. code-tab:: C++
+		PIDController::PIDController(double Kp, double Ki, double Kd, PIDSource* source, PIDOutput* output, double period)
+		PIDController::PIDController(double Kp, double Ki, double Kd, double Kf, PIDSource* source, PIDOutput* output, double period)
 
 
 1. create a new instance of a PIDController. In the full / largest constructor, the values are:
