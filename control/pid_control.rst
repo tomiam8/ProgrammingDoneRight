@@ -70,7 +70,7 @@ Derivative gain works by calculating the change in error. By finding this change
 
 Feed-Forward
 --------------
-:math:`F \times Setpoint
+:math:`F \times Setpoint`
 
 If you have a motor that you know you want to run at 200 revolutions/minute, you *could* have the PID loop do your velocity control by itself. But if you know that the motor needs to run at 200 revs/min, then it seems silly to require the PID loop to take up all the slack, when you could just tell the motor to run at 200 revs/min, and then have the PID loop make the fine adjustements for error.
 The F term does exactly that - it provides a constant output for velocity.
