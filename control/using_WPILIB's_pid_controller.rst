@@ -175,7 +175,6 @@ However, alternative options, if for some reason you could not change your D ter
 Dampener function
 
 .. code-block:: java
-   :linenos:
    
 	public class PIDMotor implements PIDOutput
 	{
@@ -189,6 +188,7 @@ Dampener function
 		 * Constructor for a PID controlled motor, with a controllable multiplier.
 		 * 
 		 * @param motor The motor being set.
+		 * @param rampBand The acceptable range for a motor change in one loop
 		 */
 		public PIDMotor(PWMSpeedController motor, double rampBand) {
 			this.motor = motor;
@@ -210,7 +210,6 @@ Dampener function
 Dynamically changing function
 
 .. code-block:: java
-	:linenos:
 	
 	public class PIDMotor implements PIDOutput
 	{
@@ -223,6 +222,7 @@ Dynamically changing function
 		 * Constructor for a PID controlled motor, with a controllable multiplier.
 		 * 
 		 * @param motor The motor being set.
+		 * @param rampBand The acceptable range for a motor change in one loop
 		 * @param controller The PIDController this was passed as output to
 		 */
 		public PIDMotor(PWMSpeedController motor, double rampBand, PIDController controller) {
