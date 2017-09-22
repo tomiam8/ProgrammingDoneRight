@@ -3,6 +3,8 @@ Using WPILIB's PID Controller Class
 
 *You need an understanding of PID Theory to understand this article. If you don't already understand PID, I would recommend looking at the previous PID Control article*
 
+*This article was written primarily for java. Most of the details are the same between java and C++, however some details may be different. This article is not applicable to python.*
+
 So, you now know all about PID and it's control theory magic, and would like to run some PID on your robot! Well, you've come to the right place, because this article is just for that. This article explains how you can use the inbuilt WPILIB PID Controller class for all your PID needs.
 
 	Note: If you are using the Talon SRX motor controller, you can use it's in-built PID feature to run PID *on the Talon*, if you are wired up using CAN. The Talon is able to run it's PID loop faster, resulting in better control. The Talon SRX user manual has details on how to set this up.
@@ -41,6 +43,15 @@ Linear output assumption
 	
 Implementing a basic PID Control
 ------------------------------------
+PIDController constuctors:
+.. tabs::
+	.. code-tab:: java
+		public PIDController(double Kp, double Ki, double Kd, PIDSource source, PIDOutput output)
+		public PIDController(double Kp, double Ki, double Kd, PIDSource source, PIDOutput output, double period)
+		public PIDController(double Kp, double Ki, double Kd, double Kf, PIDSource source, PIDOutput output)
+		public PIDController(double Kp, double Ki, double Kd, double Kf, PIDSource source, PIDOutput output, double period)
+
+
 1. create a new instance of a PIDController. In the full / largest constructor, the values are:
 	=======================  ======================================================================================================================================================================================================================================================================================================================================================================================================================================================
 	Constructur var name     Explanation
