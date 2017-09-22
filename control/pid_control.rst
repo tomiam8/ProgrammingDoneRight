@@ -73,7 +73,9 @@ Feed-Forward
 :math:`F \times Setpoint`
 
 If you have a motor that you know you want to run at 200 revolutions/minute, you *could* have the PID loop do your velocity control by itself. But if you know that the motor needs to run at 200 revs/min, then it seems silly to require the PID loop to take up all the slack, when you could just tell the motor to run at 200 revs/min, and then have the PID loop make the fine adjustements for error.
+
 The F term does exactly that - it provides a constant output for velocity.
+
 This fixes the issue that PID control is designed for position. For example, the closer to the setpoint the controller is, the more it drops it's output. This is from the P term and is designed so the controller slows down as it approaches the target. However, with velocity control, you want to keep on running at a set speed, not slow down.
 
 
