@@ -29,7 +29,7 @@ Welcome!
     :caption: Good Practices
     :glob:
 
-    Good Practices/*
+    GoodPractices/*
 
 
 .. toctree::
