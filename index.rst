@@ -27,8 +27,9 @@ Welcome!
 .. toctree::
     :maxdepth: 2
     :caption: Good Practices
+    :glob:
 
-    GoodPractice/code_structure.rst
+    Good Practices/*
 
 
 .. toctree::
