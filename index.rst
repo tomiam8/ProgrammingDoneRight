@@ -29,7 +29,8 @@ Welcome!
     :caption: Good Practices
     :glob:
 
-    GoodPractices/*
+    GoodPractices/code_structure.rst
+    GoodPractices/debugging.rst
 
 
 .. toctree::

@@ -10,7 +10,7 @@ There are several phases of data analysis:
 - Requirements
 - Collection
 - Processing
-- Modelling
+- Modeling
 - Analysis
 
 I will be going through all of these phases in detail to show good practices for all of them, as well as giving some examples on how to execute them properly. For this tutorial, I will be using <a href="https://thebluealliance.com/apidocs">The Blue Alliance's API</a> to get data quickly, since I don't have ready access to a competition to collect data from.
