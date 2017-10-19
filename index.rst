@@ -29,7 +29,7 @@ Welcome!
     :caption: Good Practices
     :glob:
 
-    GoodPractices/code_structure.rst
+    GoodPractices/structure.rst
     GoodPractices/debugging.rst
 
 
