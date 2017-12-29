@@ -68,6 +68,116 @@ Derivative
 
 Derivative gain works by calculating the change in error. By finding this change, it can predict future system behavior, and reduce settling time. It does this by applying a brake more or less. This can be useful if it is imperative that you don't overshoot. This isn't even used in the industry much, but if you find yourself with long settling times, it may help to introduce a Derivative gain.
 
+
+Using PID on your robot
+-----------------------
+
+Now that you know the math behind PID, it's time to implement it with your robot. There are two ways to do this. One is to create the PID calculaitons yourself, the other is to use WPILib's PIDController. Let's talk about both
+
+Custom PID Loop
+^^^^^^^^^^^^^^^
+
+Let's create an example drive class
+
+.. tabs::
+
+    .. code-tab:: java
+
+        public class Drive(){
+            int P, I, D = 1;
+            int integral, previous_error, setpoint = 0;
+            Gyro gyro;
+            DifferentialDrive robotDrive;
+
+
+            public Drive(Gyro gyro){
+                this.gyro = gyro;
+            }
+
+            public void setSetpoint(int setpoint)
+            {
+                this.setpoint = setpoint;
+            }
+
+            public void PID(){
+                error = setpoint - gyro.getAngle(); // Error = Target - Actual
+                this.integral += (error*.02); // Integral is increased by the error*time (which is .02 seconds using normal IterativeRobot)
+                derivative = (error - this.previous_error) / .02;
+                this.rcw = P*error + I*this.integral + D*derivative;
+            }
+
+            public void execute()
+            {
+                PID();
+                robotDrive.arcadeDrive(0, rcw);
+            }
+        }
+
+    .. code-tab:: c++
+
+        class Drive:
+        {
+            int P, I, D, error, setpoint, rcw;
+            public:
+
+            Drive(){
+                P, I, D = 0;
+                error, setpoint, rcw = 0;
+
+            }
+
+            void setSetpoint(int setpoint){
+                this.setpoint = setpoint;
+            }
+            void PID(){
+                error = setpoint - gyro.getAngle() // Error = Target - Actual
+                this.integral += (error*.02) // Integral is increased by the error*time (which is .02 seconds using normal IterativeRobot)
+                derivative = (error - this.previous_error) / .02
+                rcw = P*error + I*self.integral + D*derivative
+            }
+
+            void execute(){
+                PID();
+                robotDrive.arcadeDrive(0, rcw);
+            }
+        }
+
+    .. code-tab:: py
+
+        class Drive:
+
+            def __init__(leftMotor, rightMotor, gyro):
+                self.gyro = gyro
+                self.setpoint = 0
+                self.robotDrive = wpilib.drive.DifferentialDrive(leftMotor, rightMotor)
+
+                # PID Values
+                self.P = 1
+                self.I = 1
+                self.D = 1
+
+                self.integral = 0
+                self.previous_error = 0
+
+
+            def setSetpoint(self, setpoint):
+                self.setpoint = setpoint
+
+            def PID(self):
+                """PID for angle control"""
+                error = self.setpoint - self.gyro.getAngle() # Error = Target - Actual
+                self.integral = integral + (error*.02)
+                derivative = (error - self.previous_error) / .02
+                self.rcw = self.P*error + self.I*self.integral + self.D*derivative
+
+
+            def execute(self):
+                """Called every iteration of teleopPeriodic"""
+                self.PID()
+                self.robotDrive.arcadeDrive(0, self.rcw)
+
+
+
 Tuning Methods
 --------------
 
