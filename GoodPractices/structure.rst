@@ -120,3 +120,26 @@ Now that you've created all of the robot components, we can focus on teleop code
 
 
 This structure allows for easy configuration of joystick -> action. The drive code shouldn't involve an if statement, since you always want control over the drivetrain, and you should call the command that drives every loop. You probably want it to be at the top, that way if you have any code that edits the drive (such as angle rotation code) the values will not get overwritten by the joysticks.
+
+Components
+^^^^^^^^^^
+
+The components should be made up of setters, getters, and an execute method. The setters will be used to set variables used in the execute method. A good example is a function `move` in the drive class that sets the `fwd` and `rot` variables. These variables can then be used in the execute method to set motors. In order for this structure to work, it is crucial that the only place motors, relays, etc. get set is in the execute method. This prevents different parts of the robot overwriting each other. Here's an example of a move function in the drive class. ::
+
+    function move(fwd, rot):
+        global fwd = fwd
+        global rot = rot
+    
+    
+    function execute():
+        DifferentialDrive.arcadeDrive(fwd, rot)
+
+The reason for the setters setting variables and then an execute method passing those variables to the motors is to prevent 'race conditions'. Essentially, imagine you have two buttons on your joystick. One is to set a motor to full forward, the other, full reverse. If in your code you had ::
+
+    if button1:
+        component.setFullForward()
+    
+    if button2:
+        component.setFullReverse()
+
+then as the code looped, it would constantly switch the motors between forward and reverse. Now you could you an else if loop, but it can be annoying to manage precedence like this. Using verb methods allows every button to affect the outcome, but only the last one to actually show on the robot. This is helpful if you create autonomous commands that interact like a human. You can put them all the way at the bottom or top, and guarantee they either always take precedence, always yield, or a mix of the two.

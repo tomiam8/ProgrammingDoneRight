@@ -27,7 +27,6 @@ Welcome!
 .. toctree::
     :maxdepth: 2
     :caption: Good Practices
-    :glob:
 
     GoodPractices/structure.rst
     GoodPractices/debugging.rst
@@ -36,7 +35,6 @@ Welcome!
 .. toctree::
     :maxdepth: 2
     :caption: User Input
-    :glob:
 
     user_input/joystick.rst
 
@@ -48,6 +46,11 @@ Welcome!
     control/*
     motors/*
 
+.. toctree::
+    :maxdepth: 2
+    :caption: Data
+    
+    analysis/basics_of_analysis.rst
 
 .. toctree::
     :maxdepth: 2
