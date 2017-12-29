@@ -87,7 +87,7 @@ Let's create an example drive class
             int P, I, D = 1;
             int integral, previous_error, setpoint = 0;
             Gyro gyro;
-            RobotDrive robotDrive;
+            DifferentialDrive robotDrive;
 
 
             public Drive(Gyro gyro){
@@ -103,7 +103,7 @@ Let's create an example drive class
                 error = setpoint - gyro.getAngle(); // Error = Target - Actual
                 this.integral += (error*.02); // Integral is increased by the error*time (which is .02 seconds using normal IterativeRobot)
                 derivative = (error - this.previous_error) / .02;
-                rcw = P*error + I*self.integral + D*derivative;
+                this.rcw = P*error + I*this.integral + D*derivative;
             }
 
             public void execute()
@@ -147,10 +147,9 @@ Let's create an example drive class
         class Drive:
 
             def __init__(leftMotor, rightMotor, gyro):
-                self.leftMotor = leftMotor
-                self.rightMotor = rightMotor
                 self.gyro = gyro
                 self.setpoint = 0
+                self.robotDrive = wpilib.drive.DifferentialDrive(leftMotor, rightMotor)
 
                 # PID Values
                 self.P = 1
