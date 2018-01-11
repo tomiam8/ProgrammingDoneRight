@@ -68,6 +68,15 @@ Derivative
 
 Derivative gain works by calculating the change in error. By finding this change, it can predict future system behavior, and reduce settling time. It does this by applying a brake more or less. This can be useful if it is imperative that you don't overshoot. This isn't even used in the industry much, but if you find yourself with long settling times, it may help to introduce a Derivative gain.
 
+Feed-Forward
+--------------
+:math:`F \times Setpoint`
+
+If you have a motor that you know you want to run at 200 revolutions/minute, you *could* have the PID loop do your velocity control by itself. But if you know that the motor needs to run at 200 revs/min, then it seems silly to require the PID loop to take up all the slack, when you could just tell the motor to run at 200 revs/min, and then have the PID loop make the fine adjustements for error.
+
+The F term does exactly that - it provides a constant output for velocity.
+
+This fixes the issue that PID control is designed for position. For example, the closer to the setpoint the controller is, the more it drops it's output. This is from the P term and is designed so the controller slows down as it approaches the target. However, with velocity control, you want to keep on running at a set speed, not slow down.
 
 Using PID on your robot
 -----------------------
@@ -175,7 +184,6 @@ Let's create an example drive class
                 """Called every iteration of teleopPeriodic"""
                 self.PID()
                 self.robotDrive.arcadeDrive(0, self.rcw)
-
 
 
 Tuning Methods
