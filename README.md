@@ -12,4 +12,7 @@ After that, you just need to run
 
 `make html`
 
+or to use sphinx-autobuild
+`make auto`
+
 from the root of the project to build it. To open locally, navigate to `.build/html` and open `index.html`
